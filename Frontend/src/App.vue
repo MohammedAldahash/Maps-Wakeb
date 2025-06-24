@@ -1,12 +1,14 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, useRoute} from 'vue-router'
+
+const route = useRoute()
 </script>
 
 <template>
   <div class="app-container">
-    <header class="navbar">
+    <header class="navbar" v-if="route.path !== '/'">
       <nav>
-        <RouterLink to="/">Login</RouterLink>
+        <RouterLink to="/">Logout</RouterLink>
         <RouterLink to="/home">Home</RouterLink>
         <RouterLink to="/map">Map</RouterLink>
       </nav>
@@ -55,6 +57,6 @@ nav a.router-link-exact-active {
 .main-content {
   flex: 1;
   overflow: auto;
-   margin-top: 60px;
+  margin-top: 60px;
 }
 </style>

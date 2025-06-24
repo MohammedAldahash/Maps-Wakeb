@@ -1,14 +1,18 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 const email = ref('')
 const password = ref('')
+const router = useRouter()
+
+
 function handleLogin(){
     fetch('http://localhost:3001/users')
   .then(res => res.json())
   .then(users => {
     const user = users.find(u => u.email === email.value && u.password === password.value)
     if (user) {
-      alert('Login success!')
+      router.push('/map')
     } else {
       alert('Invalid credentials')
     }
