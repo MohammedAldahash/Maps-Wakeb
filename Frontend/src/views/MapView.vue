@@ -1,7 +1,7 @@
 <script setup>
-import 'leaflet/dist/leaflet.css'
 import MapBase from '@/components/MapBase.vue';
-import { defineProps } from 'vue'
+import MapLocation from '@/components/MapLocation.vue';
+import { ref, defineProps } from 'vue'
 
 const props = defineProps({
   mapType: {
@@ -9,10 +9,15 @@ const props = defineProps({
     default: 'satellite'
   }
 })
+const mapRef = ref(null)
+function handleMapReady(mapInctance){
+  mapRef.value = mapInctance
+}
 </script>
 
 <template>
 <div>
-    <MapBase :mapType="props.mapType"/>
+    <MapBase :mapType="props.mapType" @mapReady="handleMapReady" />
+    <MapLocation v-if="mapRef" :map="mapRef"/>
 </div>
 </template>

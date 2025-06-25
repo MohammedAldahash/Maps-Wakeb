@@ -1,13 +1,17 @@
 <script setup>
 import 'leaflet/dist/leaflet.css'
-import { onMounted, watch } from 'vue';
+import { onMounted, watch, defineEmits } from 'vue';
 import L from 'leaflet'
+
+const emit = defineEmits(['mapReady'])
+
 const props = defineProps({
   mapType: {
     type: String,
     default: 'streets',
   }
 })
+
 let map= null
 let currentLayer= null
 const layers = {
@@ -32,15 +36,17 @@ positron: L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r
 darkmatter: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '© CartoDB'
 })
-
-
 }
+
 onMounted(()=>{
-    map= L.map('map').setView([24.7136, 46.6753],12)
+    map= L.map('map').setView([24.7136, 46.6753],10)
 
     currentLayer = layers[props.mapType] 
     currentLayer.addTo(map)
+
+    emit('mapReady', map)
 })
+
 watch(() => props.mapType, (newType) => {
   if (map && layers[newType]) {
     map.removeLayer(currentLayer)
@@ -54,9 +60,10 @@ watch(() => props.mapType, (newType) => {
 </div>
 </template>
 
-<style>
+<style scoped>
 .map-container {
-  height: 905px;
-  width: 100%;
+    display: flex;
+    height: 905px;
+    width: 100%;
 }
 </style>
