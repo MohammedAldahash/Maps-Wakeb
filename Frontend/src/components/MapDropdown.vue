@@ -3,10 +3,15 @@
     <button class="map-type-button">Map Type ▾</button>
     <div class="map-type-options">
         <button @click="selectType('streets')">Streets</button>
+        <hr/>
         <button @click="selectType('topographic')">topographic</button>
+        <hr/>
         <button @click="selectType('satellite')">satellite</button>
+        <hr/>
         <button @click="selectType('positron')">Positron</button>
+        <hr/>
         <button @click="selectType('light')">Light</button>
+        <hr/>
         <button @click="selectType('darkmatter')">Dark Matter</button>
     </div>
   </div>
@@ -39,12 +44,13 @@ function selectType(type) {
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: #2f3e4d;
+  background-color: #2f3e4de3;
   min-width: 150px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   z-index: 3000;
   flex-direction: column;
-  border-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 .map-type-options button {
@@ -56,9 +62,15 @@ function selectType(type) {
   text-align: left;
   cursor: pointer;
 }
+hr{
+border: none;
+  height: 2px;
+  background-color: #1f2d3d; 
+}
 
 .map-type-options button:hover {
   background-color: #3f4e5d;
+    border-radius: 10px;
 }
 
 /* Show dropdown on hover */

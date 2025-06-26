@@ -14,12 +14,14 @@ function handleMapTypeChange(type){
   <div class="app-container">
     <header class="navbar" v-if="route.path !== '/'">
       <nav>
-        
+        <div class="left-nav">
         <RouterLink to="/home">Home</RouterLink>
         <RouterLink to="/map">Map</RouterLink>
         <MapDropdown @mapType="handleMapTypeChange" />
-        
+        </div>
+        <div class="right-nav">
         <RouterLink to="/">Logout</RouterLink>
+        </div>
       </nav>
     </header>
 
@@ -41,6 +43,7 @@ function handleMapTypeChange(type){
 
 header.navbar {
   position: fixed;
+  height: 60px;
   width: 100%;
   z-index: 1000;
   background-color: #1f2d3d;
@@ -50,10 +53,20 @@ header.navbar {
 
 nav {
   display: flex;
+  justify-content: space-between;
+    align-items: center;
+  gap: 1rem;
+}
+
+.left-nav, .right-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   gap: 1rem;
 }
 
 nav a {
+  display: flex;
   color: white;
   text-decoration: none;
   font-weight: bold;
