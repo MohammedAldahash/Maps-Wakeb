@@ -1,16 +1,17 @@
 <script setup>
 import 'leaflet/dist/leaflet.css'
-import { onMounted, watch, defineEmits } from 'vue';
+import { onMounted, watch} from 'vue';
 import L from 'leaflet'
+import { useMap } from '@/composables/useMap';
 
-const emit = defineEmits(['mapReady'])
+const{ setMap, mapType } = useMap();
 
-const props = defineProps({
-  mapType: {
-    type: String,
-    default: 'streets',
-  }
-})
+// const props = defineProps({
+//   mapType: {
+//     type: String,
+//     default: 'streets',
+//   }
+// })
 
 let map= null
 let currentLayer= null
@@ -40,14 +41,12 @@ darkmatter: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{
 
 onMounted(()=>{
     map= L.map('map').setView([24.7136, 46.6753],10)
-
-    currentLayer = layers[props.mapType] 
+    setMap(map);
+    currentLayer = layers[mapType.value] 
     currentLayer.addTo(map)
-
-    emit('mapReady', map)
 })
 
-watch(() => props.mapType, (newType) => {
+watch(mapType, (newType) => {
   if (map && layers[newType]) {
     map.removeLayer(currentLayer)
     currentLayer = layers[newType].addTo(map)

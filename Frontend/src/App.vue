@@ -1,13 +1,7 @@
 <script setup>
 import { RouterLink, RouterView, useRoute} from 'vue-router'
 import MapDropdown from './components/MapDropdown.vue'
-import { ref } from 'vue'
-const selectedMapType = ref('streets')
-
 const route = useRoute()
-function handleMapTypeChange(type){
-  selectedMapType.value = type
-}
 </script>
 
 <template>
@@ -17,7 +11,7 @@ function handleMapTypeChange(type){
         <div class="left-nav">
         <RouterLink to="/home">Home</RouterLink>
         <RouterLink to="/map">Map</RouterLink>
-        <MapDropdown @mapType="handleMapTypeChange" />
+        <MapDropdown/>
         </div>
         <div class="right-nav">
         <RouterLink to="/">Logout</RouterLink>
@@ -26,7 +20,7 @@ function handleMapTypeChange(type){
     </header>
 
     <main class="main-content">
-      <RouterView :mapType="selectedMapType" @mapType="handleMapTypeChange"/>
+      <RouterView/>
     </main>
   </div>
 </template>
