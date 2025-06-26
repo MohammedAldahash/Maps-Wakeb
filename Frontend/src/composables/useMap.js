@@ -2,6 +2,7 @@ import { ref } from "vue";
 
 export const map = ref(null);
 export const mapType = ref('satellite');
+export const userMarker = ref(null);
 export const favorites = ref([]);
 export const destination = ref(null);
 export const addMarkerMode = ref(false);

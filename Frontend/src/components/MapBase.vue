@@ -2,7 +2,7 @@
 import 'leaflet/dist/leaflet.css'
 import { onMounted, watch} from 'vue';
 import L from 'leaflet'
-import { useMap } from '@/composables/useMap';
+import { useMap, userMarker } from '@/composables/useMap';
 
 const{ setMap, mapType } = useMap();
 
@@ -50,6 +50,9 @@ watch(mapType, (newType) => {
   if (map && layers[newType]) {
     map.removeLayer(currentLayer)
     currentLayer = layers[newType].addTo(map)
+    if (userMarker.value) {
+      userMarker.value.addTo(map);
+    }
   }
 })
 </script>

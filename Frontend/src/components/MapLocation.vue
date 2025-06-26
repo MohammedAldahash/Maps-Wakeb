@@ -1,34 +1,24 @@
 <script setup>
 import { onMounted } from 'vue'
-import { defineProps } from 'vue'
 import L from 'leaflet'
+import { useMap, userMarker  } from '@/composables/useMap'
 
-const props = defineProps({
-  map: Object
-})
-
-let userMarker = null
+const {map} = useMap()
 
 function addUserLocation() {
-  if (!navigator.geolocation) {
-    alert('Geolocation not supported.')
-    return
-  }
-
-  navigator.geolocation.getCurrentPosition((position) => {
-    const latlng = [position.coords.latitude, position.coords.longitude]
-
-    if (props.map) {
-      if (userMarker) {
-        userMarker.setLatLng(latlng)
-      } else {
-        userMarker.value = L.marker(latlng).addTo(props.map).bindPopup('You are here').openPopup()
-      }
-      props.map.setView(latlng, 13)
+  navigator.geolocation.getCurrentPosition((pos) => {
+    const { latitude, longitude } = pos.coords;
+    if (map.value) {
+      if (userMarker.value) {
+      map.value.removeLayer(userMarker.value);
     }
-  }, () => {
-    alert('Could not get your location.')
-  })
+      userMarker.value =L.marker([latitude, longitude])
+        .addTo(map.value)
+        .bindPopup('You are here')
+        .openPopup();
+      map.value.setView([latitude, longitude], 13);
+    }
+  });
 }
 
 onMounted(() => {
