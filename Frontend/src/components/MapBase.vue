@@ -1,8 +1,8 @@
 <script setup>
 import 'leaflet/dist/leaflet.css'
 import { onMounted, watch} from 'vue';
-import L from 'leaflet'
-import { useMap, userMarker } from '@/composables/useMap';
+import leaflet from 'leaflet'
+import { useMap} from '@/composables/useMap';
 
 const{ setMap, mapType } = useMap();
 
@@ -15,47 +15,44 @@ const{ setMap, mapType } = useMap();
 
 let map= null
 let currentLayer= null
-const layers = {
-  streets: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+const arrLayers = {
+  streets: leaflet.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap contributors'
   }),
-  topographic: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+  topographic: leaflet.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenTopoMap contributors'
   }),
-  satellite: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+  satellite: leaflet.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
   attribution: '© Esri & contributors'
 }),
-dark: L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_dark/{z}/{x}/{y}{r}.png', {
+dark: leaflet.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_dark/{z}/{x}/{y}{r}.png', {
   attribution: '© Stadia Maps'
 }),
-light: L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
+light: leaflet.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png', {
   attribution: '© Stadia Maps'
 }),
-positron: L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+positron: leaflet.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '© CartoDB'
 }),
-darkmatter: L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+darkmatter: leaflet.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '© CartoDB'
 })
 }
 
 onMounted(()=>{
-    map= L.map('map').setView([24.7136, 46.6753],10)
+    map= leaflet.map('map').setView([24.7136, 46.6753],10)
     setMap(map);
-    currentLayer = layers[mapType.value] 
+    currentLayer = arrLayers[mapType.value] 
     currentLayer.addTo(map)
 })
 
 watch(mapType, (newType) => {
-  if (map && layers[newType]) {
+  if (map && arrLayers[newType]) {
     map.removeLayer(currentLayer)
-    currentLayer = layers[newType].addTo(map)
-    if (userMarker.value) {
-      userMarker.value.addTo(map);
-    }
+    currentLayer = arrLayers[newType].addTo(map)
   }
 })
-</script>
+</script> 
 
 <template>
 <div id="map" class="map-container">
