@@ -50,7 +50,7 @@
   background-color: #2f3e4de3;
   min-width: 150px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  z-index: 3000;
+  z-index: 1000;
   flex-direction: column;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;

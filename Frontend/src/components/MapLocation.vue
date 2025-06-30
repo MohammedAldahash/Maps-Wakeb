@@ -11,8 +11,6 @@ function addUserLocation() {
     if (map.value) {
       L.marker([latitude, longitude])
         .addTo(map.value)
-        .bindPopup('You are here')
-        .openPopup();
       map.value.setView([latitude, longitude], 13);
     }
   });
