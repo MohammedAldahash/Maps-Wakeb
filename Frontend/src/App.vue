@@ -9,7 +9,6 @@ const route = useRoute()
     <header class="navbar" v-if="route.path !== '/'">
       <nav>
         <div class="left-nav">
-        <RouterLink to="/home">Home</RouterLink>
         <RouterLink to="/map">Map</RouterLink>
         <MapDropdown/>
         </div>

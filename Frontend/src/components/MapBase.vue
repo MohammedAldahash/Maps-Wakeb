@@ -6,13 +6,10 @@ import { useMap} from '@/composables/useMap';
 
 const{ setMap, mapType } = useMap();
 
-// const props = defineProps({
-//   mapType: {
-//     type: String,
-//     default: 'streets',
-//   }
-// })
-
+const bounds = leaflet.latLngBounds(
+    [-300, -300], // SW
+    [300, 300]  // NE
+  );
 let map= null
 let currentLayer= null
 const arrLayers = {
@@ -40,8 +37,13 @@ darkmatter: leaflet.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x
 }
 
 onMounted(()=>{
-    map= leaflet.map('map').setView([24.7136, 46.6753],10)
+    map= leaflet.map('map',{
+      minZoom:3,
+    }).setView([24.7136, 46.6753],10)
     setMap(map);
+
+    map.setMaxBounds(bounds);
+    map.on('drag', () => map.panInsideBounds(bounds, { animate: false }));
     currentLayer = arrLayers[mapType.value] 
     currentLayer.addTo(map)
 })

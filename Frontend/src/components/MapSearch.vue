@@ -8,7 +8,7 @@ const {map, getIconType} = useMap();
 const query = ref('');
 const results = ref([]);
 const marker = ref(null);
-
+const selectedPlace = ref(null)
 async function searchLocation() {
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query.value)}&format=json&limit=8`;
     try{
@@ -31,13 +31,28 @@ function selectResult(result) {
         marker.value =L.marker([lat, lon], {icon})
         .addTo(map.value)
         map.value.setView([lat, lon], 14);
+
+        selectedPlace.value = {
+          name: result.display_name,
+          lat,
+          lon,
+        }
     }
 
     results.value = [];
     query.value = '';
 }
+
+function clearSearchResult() {
+  if (marker.value) {
+    map.value.removeLayer(marker.value);
+    marker.value =null;
+  }
+  selectedPlace.value = null;
+}
 </script>
  <template>
+  <div>
     <div class="search-box ">
         <input
         v-model="query"
@@ -51,6 +66,15 @@ function selectResult(result) {
         {{ result.display_name }}</li>
         </ul>
     </div>
+    <div v-if="selectedPlace" class="info-card">
+  <div class="info-content">
+    <strong>{{ selectedPlace.name }}</strong><br />
+    Lat: {{ selectedPlace.lat }}<br />
+    Lon: {{ selectedPlace.lon }}
+  </div>
+  <button class="close-btn" @click="clearSearchResult">✖</button>
+</div>
+</div>
  </template>
 
 <style>
@@ -92,4 +116,30 @@ li {
 li:hover {
   background-color: #f0f0f0;
 }
+
+.info-card {
+  position: absolute;
+  bottom: 30px;
+  right: 20px;
+  background: #ffffffdb;
+  color:#444;
+  padding: 12px 16px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  z-index: 2000;
+  display: flex;
+  align-items: start;
+  gap: 10px;
+  max-width: 300px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #444;
+  cursor: pointer;
+  margin-left: auto;
+}
+
 </style>
