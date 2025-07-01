@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-  import { useMap } from '@/composables/useMap';
+  import { useMap } from '@/composables/mapStore';
   const {setMapType} = useMap();
 
 // const emit = defineEmits(['mapType'])

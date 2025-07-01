@@ -1,5 +1,5 @@
 <script setup>
-import { useMap } from '@/composables/useMap';
+import { useMap } from '@/composables/mapStore';
 import { ref } from 'vue';
 import L from 'leaflet';
 import axios from 'axios';

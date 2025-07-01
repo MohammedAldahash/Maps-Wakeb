@@ -2,7 +2,7 @@
 import 'leaflet/dist/leaflet.css'
 import { onMounted, watch} from 'vue';
 import leaflet from 'leaflet'
-import { useMap} from '@/composables/useMap';
+import { useMap} from '@/composables/mapStore';
 
 const{ setMap, mapType } = useMap();
 

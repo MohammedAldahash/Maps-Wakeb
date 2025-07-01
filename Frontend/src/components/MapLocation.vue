@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted } from 'vue'
 import L from 'leaflet'
-import { useMap } from '@/composables/useMap'
+import { useMap } from '@/composables/mapStore'
 
 const {map} = useMap()
 
