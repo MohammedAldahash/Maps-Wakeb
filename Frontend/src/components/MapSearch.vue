@@ -3,10 +3,11 @@ import { useMap } from '@/composables/useMap';
 import { ref } from 'vue';
 import L from 'leaflet';
 import axios from 'axios';
-const {map} = useMap();
+const {map, getIconType} = useMap();
 
 const query = ref('');
 const results = ref([]);
+const marker = ref(null);
 
 async function searchLocation() {
     const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query.value)}&format=json&limit=8`;
@@ -20,17 +21,20 @@ async function searchLocation() {
 function selectResult(result) {
   const lat = parseFloat(result.lat);
   const lon = parseFloat(result.lon);
-    console.log(result)
-  if (map.value) {
-    L.marker([lat, lon])
-      .addTo(map.value)
-      
+  console.log(result)
+  const icon = getIconType(result.type)
 
-    map.value.setView([lat, lon], 14);
-  }
+    if(marker.value){
+        map.value.removeLayer(marker.value);
+    }  
+    if (map.value) {
+        marker.value =L.marker([lat, lon], {icon})
+        .addTo(map.value)
+        map.value.setView([lat, lon], 14);
+    }
 
-  results.value = [];
-  query.value = '';
+    results.value = [];
+    query.value = '';
 }
 </script>
  <template>

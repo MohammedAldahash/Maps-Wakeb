@@ -1,4 +1,5 @@
 import { ref } from "vue";
+import L from 'leaflet';
 
 export const map = ref(null);
 export const mapType = ref('satellite');
@@ -15,9 +16,24 @@ export function useMap() {
   const removeFavorite = (name) => {
     favorites.value = favorites.value.filter(fav => fav.name !== name);
   };
-
+  const getIconType= (type) =>{
+    const icons={
+      university: 'education.png',
+      hospital: 'hospital.png',
+      restaurant: 'restaurant.png',
+      place_of_worship: 'mosque.png',
+      supermarket: 'supermarket.png',
+      bank: 'bank-location.png',
+    }
+    return L.icon({
+      iconUrl: `/public/${icons[type]|| 'gps.png'}`,
+      iconSize: [45, 50],
+      iconAnchor: [15, 40],
+      popupAnchor: [0, -35]
+    });
+  };
   return {
     map, mapType, favorites, destination, addMarkerMode,
-    setMap, setMapType, addFavorite, removeFavorite
+    setMap, setMapType, addFavorite, removeFavorite, getIconType
   };
 }
