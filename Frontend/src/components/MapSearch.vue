@@ -3,17 +3,46 @@ import { useMap } from '@/composables/mapStore';
 import { ref } from 'vue';
 import L from 'leaflet';
 import axios from 'axios';
-const {map, getIconType} = useMap();
+const {map, selectedPlace, userLocation ,getIconType} = useMap();
 
 const query = ref('');
 const results = ref([]);
 const marker = ref(null);
-const selectedPlace = ref(null)
+function haversineDistance(coord1, coord2) {
+  const toRad = (x) => (x * Math.PI) / 180;
+  const R = 6371; // Earth radius in KM
+
+  const dLat = toRad(coord2.lat - coord1.lat);
+  const dLon = toRad(coord2.lng - coord1.lng);
+  const lat1 = toRad(coord1.lat);
+  const lat2 = toRad(coord2.lat);
+
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
 async function searchLocation() {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query.value)}&format=json&limit=8`;
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query.value)}&format=json&limit=50`;
     try{
         const response = await axios.get(url);
-        results.value = response.data;
+        let data = response.data;
+
+        if (userLocation.value) {
+          const [userLat, userLng] = userLocation.value;
+
+          data = data.map(result => ({
+          ...result,
+          distance: haversineDistance(
+            { lat: userLat, lng: userLng },
+            { lat: parseFloat(result.lat), lng: parseFloat(result.lon) }
+          )
+        })).sort((a, b) => a.distance - b.distance).slice(0, 8);;
+    }
+
+        results.value = data;
     } catch (err) {
     console.error('Nominatim search error', err)}
 }

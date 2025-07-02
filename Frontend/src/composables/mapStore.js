@@ -8,6 +8,11 @@ export const favorites = ref([]);
 export const destination = ref(null);
 export const addMarkerMode = ref(false);
 
+//for destination we created the following:
+export const userLocation = ref(null);
+export const selectedPlace = ref(null);
+
+
 export function useMap() {
   const setMap = (m) => map.value = m;
   const setMapType = (type) => mapType.value = type;
@@ -43,7 +48,7 @@ export function useMap() {
     });
   };
   return {
-    map, mapType, favorites, destination, addMarkerMode,
+    map, mapType, favorites, destination, addMarkerMode,  userLocation, selectedPlace,
     setMap, setMapType, addFavorite, removeFavorite, getIconType
   };
 }

@@ -2,16 +2,15 @@
 import { onMounted } from 'vue'
 import L from 'leaflet'
 import { useMap } from '@/composables/mapStore'
-
-const {map} = useMap()
+const {map, userLocation} = useMap()
 
 function addUserLocation() {
   navigator.geolocation.getCurrentPosition((pos) => {
-    const { latitude, longitude } = pos.coords;
+    userLocation.value = [pos.coords.latitude,pos.coords.longitude];
     if (map.value) {
-      L.marker([latitude, longitude])
+      L.marker(userLocation.value)
         .addTo(map.value)
-      map.value.setView([latitude, longitude], 13);
+      map.value.setView(userLocation.value, 13);
     }
   });
 }
