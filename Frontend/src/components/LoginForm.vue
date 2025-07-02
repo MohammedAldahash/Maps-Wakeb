@@ -4,7 +4,9 @@ import { useRouter } from 'vue-router';
 const email = ref('')
 const password = ref('')
 const router = useRouter()
-const isLogin = ref(false)
+const isLogin = ref(true)
+const confirmPassword = ref('')
+const name = ref('')
 function toggleForm(){
   if(isLogin.value){
     isLogin.value = false
@@ -25,8 +27,46 @@ function handleLogin(){
   })
 }
 function handleRegister(){
-  fetch('http://localhost:3001/users', {
-  })
+  if (password.value !== confirmPassword.value) {
+    alert("Passwords do not match");
+    return;
+  }
+  fetch('http://localhost:3001/users')
+    .then(res => res.json())
+    .then(users => {
+      const exists = users.find(u => u.email === email.value);
+      if (exists) {
+        alert('Email already registered.');
+        return;
+      }
+    const newUser = {
+        id: Date.now(),
+        name: name.value,
+        email: email.value,
+        password: password.value,
+        admin: false
+      };
+
+      fetch('http://localhost:3001/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newUser)
+    })
+    .then(res => {
+          if (res.ok) {
+            alert('Registered successfully!');
+            isLogin.value = true; // switch to login view
+          } else {
+            alert('Registration failed.');
+          }
+        });
+    })
+    .catch(() => {
+      alert('Registration failed. Please try again.');
+    })
+
 }
 </script>
 
@@ -49,7 +89,7 @@ function handleRegister(){
         
         <template v-if="!isLogin">
           <label>confirm password: </label>
-        <input v-model="password" type="password" placeholder="Confirm Password..." required/>
+        <input v-model="confirmPassword" type="password" placeholder="Confirm Password..." required/>
         </template>
 
       <button type="submit">{{ isLogin ? 'Sign In' : 'Register' }}</button>    

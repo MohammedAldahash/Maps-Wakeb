@@ -39,7 +39,7 @@ darkmatter: leaflet.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x
 onMounted(()=>{
     map= leaflet.map('map',{
       minZoom:3,
-    }).setView([24.7136, 46.6753],10)
+    }).setView([24.7136, 46.6753],12)
     setMap(map);
 
     map.setMaxBounds(bounds);
