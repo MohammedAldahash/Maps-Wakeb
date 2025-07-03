@@ -1,7 +1,16 @@
 <script setup>
-import { RouterLink, RouterView, useRoute} from 'vue-router'
+import { RouterLink, RouterView, useRoute, useRouter} from 'vue-router'
 import MapDropdown from './components/MapDropdown.vue'
+import { useUser } from '@/composables/usersStore';
+const { logout } = useUser();
+
 const route = useRoute()
+const router = useRouter()
+function handleLogout() {
+  logout();
+  router.push('/');
+}
+
 </script>
 
 <template>
@@ -9,11 +18,14 @@ const route = useRoute()
     <header class="navbar" v-if="route.path !== '/'">
       <nav>
         <div class="left-nav">
+        <button @click="handleLogout">Logout</button>
+
         <RouterLink to="/map">Map</RouterLink>
         <MapDropdown/>
+
         </div>
         <div class="right-nav">
-        <RouterLink to="/">Logout</RouterLink>
+          <img src="/src/assets/Wakeb-logo-removebg.png" alt="">
         </div>
       </nav>
     </header>
@@ -49,12 +61,13 @@ nav {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+    font-size: 16px;
+
 }
 
 .left-nav, .right-nav {
   display: flex;
   flex-direction: row;
-  align-items: center;
   gap: 1rem;
 }
 
@@ -66,12 +79,38 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  text-decoration: underline;
+text-decoration: none;
+  color: hsla(160, 100%, 37%, 1);
+  transition: 0.4s;
+  padding: 3px;
+  font-size: 16px;
+
 }
 
 .main-content {
   flex: 1;
   overflow: auto;
   margin-top: 60px;
+}
+
+button {
+  font-size: 16px;
+  background-color: #1f2d3d;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.right-nav button:hover {
+  background-color:#151e29
+}
+
+img {
+  height: 40px; 
+  object-fit: contain;
 }
 </style>

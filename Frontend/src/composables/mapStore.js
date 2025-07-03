@@ -2,7 +2,7 @@ import { ref } from "vue";
 import L from 'leaflet';
 
 export const map = ref(null);
-export const mapType = ref('satellite');
+export const mapType = ref('streets');
 export const userMarker = ref(null);
 export const favorites = ref([]);
 export const destination = ref(null);
@@ -41,7 +41,7 @@ export function useMap() {
 
     }
     return L.icon({
-      iconUrl: `/public/${icons[type]|| 'gps.png'}`,
+      iconUrl: `/src/assets/${icons[type]|| 'gps.png'}`,
       iconSize: [45, 50],
       iconAnchor: [15, 40],
       popupAnchor: [0, -35]

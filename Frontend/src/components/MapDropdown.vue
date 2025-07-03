@@ -34,6 +34,7 @@
 }
 
 .map-type-button {
+    font-size: 16px;
   background-color: #1f2d3d;
   color: white;
   border: none;

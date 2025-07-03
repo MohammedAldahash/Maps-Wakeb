@@ -1,17 +1,16 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-const email = ref('')
-const password = ref('')
+import { isLogedin, useUser } from '@/composables/usersStore';
+
+const {email, password, loginPage, name, setCurrentUser } = useUser();
 const router = useRouter()
-const isLogin = ref(true)
 const confirmPassword = ref('')
-const name = ref('')
 function toggleForm(){
-  if(isLogin.value){
-    isLogin.value = false
+  if(loginPage.value){
+    loginPage.value = false
   }else{
-    isLogin.value = true
+    loginPage.value = true
   }
 }
 function handleLogin(){
@@ -20,6 +19,8 @@ function handleLogin(){
   .then(users => {
     const user = users.find(u => u.email === email.value && u.password === password.value)
     if (user) {
+      isLogedin.value = true
+      setCurrentUser(user);
       router.push('/map')
     } else {
       alert('Invalid credentials')
@@ -57,7 +58,7 @@ function handleRegister(){
     .then(res => {
           if (res.ok) {
             alert('Registered successfully!');
-            isLogin.value = true; // switch to login view
+            loginPage.value = true; // switch to login view
           } else {
             alert('Registration failed.');
           }
@@ -74,10 +75,10 @@ function handleRegister(){
 <template>
     <div class="content">
 
-    <form @submit.prevent="isLogin? handleLogin(): handleRegister()" class="login-form">
-        <h2>{{ isLogin ? 'Sign In' : 'Register' }}</h2>
+    <form @submit.prevent="loginPage? handleLogin(): handleRegister()" class="login-form">
+        <h2>{{ loginPage ? 'Sign In' : 'Register' }}</h2>
         <hr/>
-        <template v-if="!isLogin">
+        <template v-if="!loginPage">
         <label>your name: </label>
         <input v-model="name" type="text" placeholder="Full Name..." required />
         </template>
@@ -87,15 +88,15 @@ function handleRegister(){
         <label >Your password: </label>
         <input v-model="password" type="password" placeholder="Password..." required/>
         
-        <template v-if="!isLogin">
+        <template v-if="!loginPage">
           <label>confirm password: </label>
         <input v-model="confirmPassword" type="password" placeholder="Confirm Password..." required/>
         </template>
 
-      <button type="submit">{{ isLogin ? 'Sign In' : 'Register' }}</button>    
+      <button type="submit">{{ loginPage ? 'Sign In' : 'Register' }}</button>    
 
       <p @click="toggleForm()" class="switch-link">
-      {{ isLogin ? "Don't have an account? Register" : "Already have an account? Sign In" }}
+      {{ loginPage ? "Don't have an account? Register" : "Already have an account? Sign In" }}
     </p>
 
     </form>

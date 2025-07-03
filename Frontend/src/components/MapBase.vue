@@ -4,6 +4,7 @@ import { onMounted, watch} from 'vue';
 import leaflet from 'leaflet'
 import { useMap} from '@/composables/mapStore';
 
+
 const{ setMap, mapType } = useMap();
 
 const bounds = leaflet.latLngBounds(
@@ -37,6 +38,7 @@ darkmatter: leaflet.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x
 }
 
 onMounted(()=>{
+
     map= leaflet.map('map',{
       minZoom:3,
     }).setView([24.7136, 46.6753],12)

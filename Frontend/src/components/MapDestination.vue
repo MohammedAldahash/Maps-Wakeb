@@ -67,13 +67,13 @@ watch(selectedPlace, ()=>{
       @click="drawDestination"
     ><img
         v-if="userLocation && selectedPlace"
-        src="/public/destination-on.png"
+        src="/src/assets/destination-on.png"
         alt="show destination"
         class="icon"
       />
       <img
         v-else
-        src="/public/destination-off.png"
+        src="/src/assets/destination-off.png"
         alt="search for location first"
         class="icon"
       /></button>
