@@ -27,6 +27,13 @@
       "email": "m.k@aldahash.com",
       "password": "mkd123",
       "admin": false
+    },
+    {
+      "id": 1751519920711,
+      "name": "ali",
+      "email": "ali@ali.com",
+      "password": "123",
+      "admin": false
     }
   ]
 }

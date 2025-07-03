@@ -1,33 +1,62 @@
 <script setup>
+import { watch } from 'vue';
 import L from 'leaflet';
 import { selectedPlace, userLocation, useMap } from '@/composables/mapStore';
 const {map} = useMap();
 let routeLine = null;
-console.log(userLocation)
-console.log(selectedPlace)
-function drawDestination() {
+ 
+async function drawDestination() {
     if (routeLine) {
     map.value.removeLayer(routeLine);
   }
-    const userLatLng = userLocation.value;
-  const destinationLatLng =[
-    parseFloat(selectedPlace.value.lat),
-    parseFloat(selectedPlace.value.lon)
-  ];
-  console.log(userLatLng)
-console.log(destinationLatLng)
-  routeLine = L.polyline([userLatLng, destinationLatLng], {
-    color: 'blue',
-    weight: 4,
-    dashArray: '8, 10'
-  }).addTo(map.value);
+  const apiKey = '5b3ce3597851110001cf6248e3768205bb604479b1bb75945819e7ad';
+  const url = 'https://api.openrouteservice.org/v2/directions/driving-car/geojson';
 
-  // Zoom to fit both points
-  map.value.fitBounds([userLatLng, destinationLatLng], {
-    padding: [40, 40]
-  });
+ const body = {
+    coordinates: [
+      [userLocation.value[1], userLocation.value[0]],[parseFloat(selectedPlace.value.lon), parseFloat(selectedPlace.value.lat)]
+    ]
+  };
+  
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': apiKey
+      },
+      body: JSON.stringify(body)
+    });
+
+    const data = await response.json();
+
+    // Draw road-following route from GeoJSON
+    routeLine = L.geoJSON(data, {
+      style: {
+        color: 'blue',
+        weight: 3
+      }
+    }).addTo(map.value);
+
+    // Fit map to route
+    map.value.fitBounds(routeLine.getBounds(), {
+      padding: [40, 40]
+    });
+
+  } catch (err) {
+    console.error('Routing error:', err);
+    alert('Failed to load route. Please try again.');
+  }
+
 }
 
+
+watch(selectedPlace, ()=>{
+    if(routeLine){
+        map.value.removeLayer(routeLine);
+        routeLine = null;
+    }
+})
 </script>
 
 <template>

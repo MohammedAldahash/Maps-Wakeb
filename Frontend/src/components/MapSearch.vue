@@ -8,6 +8,11 @@ const {map, selectedPlace, userLocation ,getIconType} = useMap();
 const query = ref('');
 const results = ref([]);
 const marker = ref(null);
+
+
+
+
+
 function haversineDistance(coord1, coord2) {
   const toRad = (x) => (x * Math.PI) / 180;
   const R = 6371; // Earth radius in KM
@@ -62,7 +67,7 @@ function selectResult(result) {
         map.value.setView([lat, lon], 14);
 
         selectedPlace.value = {
-          name: result.display_name,
+          name: result.name,
           lat,
           lon,
         }
@@ -80,7 +85,13 @@ function clearSearchResult() {
   selectedPlace.value = null;
 }
 </script>
- <template>
+
+
+
+
+
+<template>
+
   <div>
     <div class="search-box ">
         <input
