@@ -11,7 +11,10 @@ export const currentUser = ref(null);
 export function useUser(){
     const setEmail = (e) =>  email.value = e;
       const setCurrentUser = (user) => currentUser.value = user;
-    const logout = () => {
+    
+    
+    
+      const logout = () => {
     favorites.value = [];
     email.value = '';
     password.value = '';

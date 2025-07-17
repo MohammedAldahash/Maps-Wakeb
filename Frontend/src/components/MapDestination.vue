@@ -80,12 +80,12 @@ watch(selectedPlace, ()=>{
   </div>
 </template>
 <style scoped>
-.destination-container {
+/* .destination-container {
   position: absolute;
   top: 70px;
   right: 325px;
   z-index: 1500;
-}
+} */
 
 .destination-button {
   background-color: #ffffff;
@@ -96,7 +96,9 @@ watch(selectedPlace, ()=>{
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
-
+.destination-button:hover{
+ background-color: #e2e2e2;
+}
 .destination-button:disabled {
   background-color: #cacacac4;
   cursor: not-allowed;

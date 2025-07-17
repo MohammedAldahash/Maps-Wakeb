@@ -2,6 +2,7 @@
 import { RouterLink, RouterView, useRoute, useRouter} from 'vue-router'
 import MapDropdown from './components/MapDropdown.vue'
 import { useUser } from '@/composables/usersStore';
+import MapAddMarker from './components/MapAddMarker.vue';
 const { logout } = useUser();
 
 const route = useRoute()
@@ -24,6 +25,10 @@ function handleLogout() {
         <MapDropdown/>
 
         </div>
+        <div class="center-nav">
+          <MapAddMarker />
+        </div>
+
         <div class="right-nav">
           <img src="/src/assets/Wakeb-logo-removebg.png" alt="">
         </div>
