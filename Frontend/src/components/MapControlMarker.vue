@@ -1,25 +1,26 @@
 <script setup>
 import { useMap } from '@/composables/mapStore';
+import "@/assets/styles/MapControlMarker.css"; // Import your styles
 const { addMarkerMode } = useMap();
 </script>
 
 <template>
-  <button button @click="addMarkerMode = !addMarkerMode">
+  <button button @click="addMarkerMode = !addMarkerMode" class="control-button">
         <img
         v-if="!addMarkerMode"
-        src="/src/assets/plus.png"
+        src="/src/assets/images/plus.png"
         alt="show destination"
         class="icon"
       />
       <img
         v-else
-        src="/src/assets/plus-off.png"
+        src="/src/assets/images/plus-off.png"
         alt="search for location first"
         class="icon"
       />
   </button>
 </template>
-
+<!-- 
 <style>
 button{
 background-color: #ffffff;
@@ -36,4 +37,4 @@ background-color: #ffffff;
     width: 35px;
     height: 35px;
 }
-</style>
+</style> -->

@@ -1,0 +1,14 @@
+.marker-mode-indicator {
+  position: absolute;
+
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 500;
+  font-size: 0.95rem;
+  z-index: 1500;
+  pointer-events: none;
+}

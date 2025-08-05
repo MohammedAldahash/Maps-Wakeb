@@ -41,7 +41,7 @@ export function useMap() {
 
     }
     return L.icon({
-      iconUrl: `/src/assets/${icons[type]|| 'gps.png'}`,
+      iconUrl: `/src/assets/images/${icons[type]|| 'gps.png'}`,
       iconSize: [45, 50],
       iconAnchor: [15, 40],
       popupAnchor: [0, -35]

@@ -1,0 +1,63 @@
+.left-panel {
+  flex: 1;
+  min-width: 320px;
+  background: #1e1e1e;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.user-info p {
+  margin: 0.5rem 0;
+  color: #eee;
+}
+
+.edit-form label,
+.password-form label {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.edit-form input,
+.password-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  margin-bottom: 0.7rem;
+  border-radius: 8px;
+  border: none;
+  background-color: #2a2a2a;
+  color: #fff;
+}
+
+.buttons,
+.password-section {
+  margin-top: 1rem;
+}
+
+button {
+  background-color: #2979ff;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  margin-right: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #1565c0;
+}
+
+.success {
+  color: lightgreen;
+  margin-top: 1rem;
+}
+
+.error {
+  color: salmon;
+  margin-top: 1rem;
+}

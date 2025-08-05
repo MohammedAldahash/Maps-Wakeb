@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css'
 import { onMounted, watch} from 'vue';
 import leaflet from 'leaflet'
 import { useMap} from '@/composables/mapStore';
-
+import '@/assets/styles/MapBase.css';
 
 const{ setMap, mapType } = useMap();
 
@@ -63,10 +63,3 @@ watch(mapType, (newType) => {
 </div>
 </template>
 
-<style scoped>
-.map-container {
-    display: flex;
-    height: 905px;
-    width: 100%;
-}
-</style>

@@ -1,0 +1,14 @@
+.map-container {
+  height: 100vh;
+  width: 100vw;
+  z-index: 1000;
+  filter: brightness(0.95); /* subtle dark effect */
+}
+.leaflet-container {
+  z-index: 0; /* or none at all */
+}
+
+.leaflet-pane {
+  z-index: 400; /* or higher */
+  position: relative;
+}

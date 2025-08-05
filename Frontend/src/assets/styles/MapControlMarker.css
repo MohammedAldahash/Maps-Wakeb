@@ -1,0 +1,19 @@
+.control-button {
+  background: #e2e2e2;
+  opacity: 0.9;
+  padding: 0.4rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.control-button:hover {
+ background-color: #b6b4b4;
+}
+
+.icon {
+  height: 25px;
+  width: 35x;
+  object-fit: contain;
+  filter: brightness(0.95);
+}

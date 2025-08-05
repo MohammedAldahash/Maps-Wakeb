@@ -11,6 +11,8 @@ export const currentUser = ref(null);
 export function useUser(){
     const setEmail = (e) =>  email.value = e;
       const setCurrentUser = (user) => currentUser.value = user;
+    const setName = (e) => name.value = e;
+    const setPassword = (e) => password.value = e;
     
     
     
@@ -22,6 +24,6 @@ export function useUser(){
     isLogedin.value = false;
   };
     return {
-        email, setEmail, setCurrentUser,logout, password, favorites, loginPage, isLogedin, name
+        email, setEmail, setCurrentUser,logout, setPassword, setName,password, favorites, loginPage, isLogedin, name
     }
 }

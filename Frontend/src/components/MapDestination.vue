@@ -1,4 +1,5 @@
 <script setup>
+import "@/assets/styles/mapDestination.css";
 import { watch } from 'vue';
 import L from 'leaflet';
 import { selectedPlace, userLocation, useMap } from '@/composables/mapStore';
@@ -67,26 +68,19 @@ watch(selectedPlace, ()=>{
       @click="drawDestination"
     ><img
         v-if="userLocation && selectedPlace"
-        src="/src/assets/destination-on.png"
+        src="/src/assets/images/destination-on.png"
         alt="show destination"
         class="icon"
       />
       <img
         v-else
-        src="/src/assets/destination-off.png"
+        src="/src/assets/images/destination-off.png"
         alt="search for location first"
         class="icon"
       /></button>
   </div>
 </template>
-<style scoped>
-/* .destination-container {
-  position: absolute;
-  top: 70px;
-  right: 325px;
-  z-index: 1500;
-} */
-
+<!-- <style scoped>
 .destination-button {
   background-color: #ffffff;
   color: rgb(35, 35, 35);
@@ -107,4 +101,4 @@ img{
     width: 35px;
     height: 35px;
 }
-</style>
+</style> -->

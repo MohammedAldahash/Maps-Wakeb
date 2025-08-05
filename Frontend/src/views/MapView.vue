@@ -4,6 +4,7 @@ import MapDestination from '@/components/MapDestination.vue';
 import MapLocation from '@/components/MapUserLocation.vue';
 import MapSearch from '@/components/MapSearch.vue';
 import MapControlMarker from '@/components/MapControlMarker.vue';
+import '@/assets/styles/MapView.css';
 </script>
 
 <template>
@@ -19,7 +20,7 @@ import MapControlMarker from '@/components/MapControlMarker.vue';
 </div>
 </template>
 
-<style>
+<!-- <style>
 .extentions{
     display: flex ;
     position: absolute;
@@ -32,4 +33,4 @@ import MapControlMarker from '@/components/MapControlMarker.vue';
 
 }
 
-</style>
+</style> -->

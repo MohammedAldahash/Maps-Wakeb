@@ -1,4 +1,5 @@
 <script setup>
+import "@/assets/styles/mapSearch.css";
 import { useMap } from '@/composables/mapStore';
 import { ref } from 'vue';
 import L from 'leaflet';
@@ -112,12 +113,12 @@ function clearSearchResult() {
     Lat: {{ selectedPlace.lat }}<br />
     Lon: {{ selectedPlace.lon }}
   </div>
-  <button class="close-btn" @click="clearSearchResult">✖</button>
+  <button class="close-btn" @click="clearSearchResult">X</button>
 </div>
 </div>
  </template>
 
-<style>
+<!-- <style>
 .search-box {
   position: absolute;
   top: 70px;
@@ -182,4 +183,4 @@ li:hover {
   margin-left: auto;
 }
 
-</style>
+</style> -->

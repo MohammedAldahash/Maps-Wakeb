@@ -1,0 +1,31 @@
+.destination-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.destination-button {
+  background: #e2e2e2;
+    opacity: 0.7;
+
+  padding: 0.4rem;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.destination-button:disabled {
+  background: none;
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.destination-button:hover{
+ background-color: #b6b4b4;
+}
+
+.icon {
+  height: 22px;
+  width: 35px;
+  object-fit: contain;
+  filter: brightness(0.95);
+}

@@ -2,8 +2,8 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { isLogedin, useUser } from '@/composables/usersStore';
-
-const {email, password, loginPage, name, setCurrentUser } = useUser();
+import "@/assets/styles/LoginForm.css";
+const {email, password, loginPage, name, setCurrentUser, setEmail, setName, setPassword} = useUser();
 const router = useRouter()
 const confirmPassword = ref('')
 function toggleForm(){
@@ -20,7 +20,10 @@ function handleLogin(){
     const user = users.find(u => u.email === email.value && u.password === password.value)
     if (user) {
       isLogedin.value = true
-      setCurrentUser(user);
+      setCurrentUser(user)
+      setEmail(user.email);
+      setName(user.name);
+      setPassword(user.password);
       router.push('/map')
     } else {
       alert('Invalid credentials')
@@ -95,14 +98,20 @@ function handleRegister(){
 
       <button type="submit">{{ loginPage ? 'Sign In' : 'Register' }}</button>    
 
-      <p @click="toggleForm()" class="switch-link">
-      {{ loginPage ? "Don't have an account? Register" : "Already have an account? Sign In" }}
-    </p>
+      <p @click="toggleForm()" >
+        <span>
+          {{ loginPage ? "Don't have an account? " : "Already have an account? " }}
+        </span>
+        <span class="switch-link">
+          {{ loginPage ? "Register" : "Sign In" }}
+        </span>
+      </p>
+
 
     </form>
     </div>
 </template>
-
+<!-- 
 <style>
 .content{
     display: flex; 
@@ -158,4 +167,4 @@ function handleRegister(){
 .login-form button:hover {
   background-color: rgb(58, 85, 125); /* Darker on hover */
 }
-</style>
+</style> -->

@@ -3,7 +3,7 @@ import { onMounted, onUnmounted } from 'vue';
 import L from 'leaflet';
 import { useMap } from '@/composables/mapStore';
 import { useUser } from '@/composables/usersStore';
-
+import "@/assets/styles/mapAddMarker.css"; // Import your styles
 const { map, addMarkerMode, getIconType } = useMap();
 const { email, favorites } = useUser();
 
@@ -66,7 +66,7 @@ onUnmounted(() => {
   </div>
 </template>
 
-<style scoped>
+<!-- <style scoped>
 .marker-mode-indicator {
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 
@@ -77,4 +77,4 @@ onUnmounted(() => {
   z-index: 1500;
   font-weight: bold;
 }
-</style>
+</style> -->

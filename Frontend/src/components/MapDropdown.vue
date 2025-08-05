@@ -1,34 +1,28 @@
+<script setup>
+  import { useMap } from '@/composables/mapStore';
+  import '@/assets/styles/MapDropdown.css';
+  const {setMapType} = useMap();
+</script>
+
 <template>
   <div class="map-type-dropdown">
     <button class="map-type-button">Map Type ▾</button>
     <div class="map-type-options">
-        <button @click="setMapType('streets')">Streets</button>
+        <button class="map-option" @click="setMapType('streets')">Streets</button>
         <hr/>
-        <button @click="setMapType('topographic')">topographic</button>
+        <button class="map-option" @click="setMapType('topographic')">topographic</button>
         <hr/>
-        <button @click="setMapType('satellite')">satellite</button>
+        <button class="map-option" @click="setMapType('satellite')">satellite</button>
         <hr/>
-        <button @click="setMapType('positron')">Positron</button>
+        <button class="map-option" @click="setMapType('positron')">Positron</button>
         <hr/>
-        <button @click="setMapType('light')">Light</button>
+        <button class="map-option" @click="setMapType('light')">Light</button>
         <hr/>
-        <button @click="setMapType('darkmatter')">Dark Matter</button>
+        <button class="map-option" @click="setMapType('darkmatter')">Dark Matter</button>
     </div>
   </div>
 </template>
-
-<script setup>
-  import { useMap } from '@/composables/mapStore';
-  const {setMapType} = useMap();
-
-// const emit = defineEmits(['mapType'])
-
-// function selectType(type) {
-//   emit('mapType', type)
-// }
-</script>
-
-<style scoped>
+<!-- <style scoped>
 .map-type-dropdown {
   position: relative;
 }
@@ -81,4 +75,4 @@ border: none;
 .map-type-dropdown:hover .map-type-options {
   display: block;
 }
-</style>
+</style> -->
