@@ -5,7 +5,7 @@
 }
 
 .map-type-button {
-  background-color:#1f1f1f;
+  background-color: rgba(31, 31, 31, 0.5); /* dark + semi-transparent */
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -22,8 +22,7 @@
 .map-type-options {
   display: none;
   position: absolute;
-  background-color:none;
-  min-width: 160px;
+  background-color:#1f1f1f;
   border-radius: 10px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.25);
   flex-direction: column;
@@ -36,14 +35,13 @@
 }
 
 .map-type-options button {
-  padding: 0.6rem 1rem;
-  text-align: left;
   background: #202020;
   color: #f0f0f0;
   cursor: pointer;
   z-index: 4001;
   font-size: 0.9rem;
-    border-radius: 8px;
+  border-radius: 8px;
+  width: 100%;
 
 }
 

@@ -1,31 +1,139 @@
 <!-- components/Tables.vue -->
 <script setup>
-import { ref } from 'vue'
-import { favorites } from '@/composables/usersStore'
-import "@/assets/styles/TablesPage.css"; // Import your styles 
-const markers = ref([
-  { name: "Mosque", type: "Place", locationDescription: "Main Street" },
-  { name: "Coffee Shop", type: "Cafe", locationDescription: "Block 3" }
-])
+import { ref, onMounted } from 'vue'
+import { favorites, markers } from '@/composables/usersStore' // optional if you want to keep favorites in shared store
+import "@/assets/styles/TablesPage.css";
 
-function deleteMarker(index) {
-  markers.value.splice(index, 1)
+const localMarkers = ref([])
+const localFavorites = ref([]) // local ref for favorites
+
+async function deleteMarker(index) {
+
+  
+  const marker = localMarkers.value[index];
+  const id = marker.markerId;
+
+  try {
+    const response = await fetch(`http://localhost:8084/api/marker/deleteMar?id=${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    if (response.ok) {
+      localMarkers.value.splice(index, 1); // Remove from localMarkers
+      console.log(`Marker with ID ${id} deleted.`);
+    } else {
+      console.error(`Failed to delete marker: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error deleting marker:', error);
+  }
 }
+
+async function fetchMarkers() {
+  try {
+    const res = await fetch('http://localhost:8084/api/marker/getByUser', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    if (res.ok) {
+      console.log(res.json)
+      localMarkers.value = await res.json()
+      console.log("Fetched markers:", markers.value)
+      markers.value = localMarkers.value // sync with shared store
+    } else {
+      console.error("Failed to fetch markers")
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+async function fetchFavorites() {
+  try {
+    const res = await fetch('http://localhost:8083/api/favorite/getByUser', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    if (res.ok) {
+      console.log(res.json)
+
+      localFavorites.value = await res.json()
+      // optional: sync with shared store
+      console.log("Fetched favorites:", localFavorites.value)
+      favorites.value = localFavorites.value
+    } else {
+      console.error("Failed to fetch favorites")
+    }
+  } catch (e) {
+    console.error(e)
+  }
+}
+async function deleteFavorite(index) {
+  const favorite = localFavorites.value[index];
+  const id = favorite.favoriteId;
+
+  try {
+    const response = await fetch(`http://localhost:8083/api/favorite/deleteFav?id=${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    if (response.ok) {
+      localFavorites.value.splice(index, 1); // Remove from localFavorites
+      console.log(`Favorite with ID ${id} deleted.`);
+    } else {
+      console.error(`Failed to delete favorite: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error deleting favorite:', error);
+  }
+}
+
+onMounted(() => {
+  fetchMarkers()
+  fetchFavorites()
+})
 </script>
 
 <template>
   <div class="right-panel">
     <!-- Favorites -->
-    <div class="favorites-section">
-      <h3>Your Favorite Places</h3>
-      <ul v-if="favorites.length > 0">
-        <li v-for="(fav, index) in favorites" :key="index">
-          <strong>{{ fav.name }}</strong> — {{ fav.type }}
-          <small>{{ fav.locationDescription }}</small>
-        </li>
-      </ul>
-      <p v-else class="no-favorites">No favorite locations yet.</p>
-    </div>
+<div class="markers-section">
+  <h2>Your Favorite Places</h2>
+
+  <table v-if="localFavorites.length !== 0" class="markers-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(fav, index) in localFavorites" :key="index">
+        <td>{{ fav.locationName }}</td>
+        <td>{{ fav.locationType }}</td>
+        <td>{{ fav.locationDescription || 'N/A' }}</td>
+        <td>
+          <button class="delete-btn" @click="deleteFavorite(index)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div v-else class="empty-state">
+    No favorite locations yet.
+  </div>
+</div>
+
 
     <br />
     <hr />
@@ -45,8 +153,8 @@ function deleteMarker(index) {
         </thead>
         <tbody>
           <tr v-for="(marker, index) in markers" :key="index">
-            <td>{{ marker.name }}</td>
-            <td>{{ marker.type }}</td>
+            <td>{{ marker.iconType }}</td>
+            <td>{{ marker.iconType  }}</td>
             <td>{{ marker.locationDescription || 'N/A' }}</td>
             <td>
               <button class="delete-btn" @click="deleteMarker(index)">Delete</button>

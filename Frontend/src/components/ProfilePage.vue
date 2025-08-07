@@ -1,11 +1,13 @@
 <script setup>
 import { ref } from 'vue'
-import { name, email, password, useUser } from '@/composables/usersStore'
-import "@/assets/styles/ProfilePage.css"; // Import your styles
-const { setName, setEmail, setPassword } = useUser()
+import { currentUser } from '@/composables/usersStore'
+import "@/assets/styles/ProfilePage.css"
 
-const localName = ref(name.value)
-const localEmail = ref(email.value)
+
+
+// ✅ Access name and email from currentUser
+const localName = ref(currentUser.value?.name || '')
+const localEmail = ref(currentUser.value?.email || '')
 
 const editing = ref(false)
 const changingPassword = ref(false)
@@ -21,38 +23,116 @@ function toggleEdit() {
   editing.value = !editing.value
 }
 
-function saveChanges() {
+async function saveChanges() {
   error.value = ''
   message.value = ''
 
-  setName(localName.value)
-  setEmail(localEmail.value)
+
+  const oldName = currentUser.value?.name
+  const oldEmail = currentUser.value?.email
+
+  const nameChanged = localName.value !== oldName
+  const emailChanged = localEmail.value !== oldEmail
+
+  try {
+    // 🔁 Call patch name if changed
+    if (nameChanged) {
+      await fetch(`http://localhost:8082/api/user/name?name=${encodeURIComponent(localName.value)}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+      })
+    }
+
+    // 🔁 Call patch email if changed
+    if (emailChanged) {
+      await fetch(`http://localhost:8082/api/user/email?email=${encodeURIComponent(localEmail.value)}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ email: localEmail.value })
+      })
+      .then(async res => {
+  if (!res.ok) throw new Error("Failed to update email");
+  const data = await res.json();
+        console.log(data.token)
+    if (data.token) {
+      // 🔄 update token and user info
+      localStorage.setItem('token', data.token);
+    }
+  })
+    }
+  // ✅ Update localStorage and currentUser
+  const updatedUser = {
+    ...currentUser.value,
+    name: localName.value,
+    email: localEmail.value,
+  }
+  localStorage.setItem('currentUser', JSON.stringify(updatedUser))
+  currentUser.value = updatedUser
+
   message.value = 'Profile updated successfully.'
   editing.value = false
+    } catch (err) {
+    console.error(err)
+    error.value = 'Failed to update profile.'
+  }
+
 }
 
-function changePassword() {
-  error.value = ''
-  message.value = ''
-
-  if (oldPassword.value !== password.value) {
-    error.value = 'Old password is incorrect.'
-    return
-  }
+async function changePassword() {
+  error.value = '';
+  message.value = '';
 
   if (newPassword.value !== confirmPassword.value) {
-    error.value = 'New passwords do not match.'
-    return
+    error.value = 'New passwords do not match.';
+    return;
   }
 
-  setPassword(newPassword.value)
-  message.value = 'Password updated successfully.'
+  try {
+    // 1. 🔒 Check if old password is valid
+    const res = await fetch(`http://localhost:8082/api/user/isValidPass?password=${encodeURIComponent(oldPassword.value)}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
 
-  oldPassword.value = ''
-  newPassword.value = ''
-  confirmPassword.value = ''
-  changingPassword.value = false
+    const isValid = await res.json();
+
+    if (!isValid) {
+      error.value = 'Old password is incorrect.';
+      return;
+    }
+
+    // 2. ✅ Update password
+    const updateRes = await fetch(`http://localhost:8082/api/user/password?password=${encodeURIComponent(newPassword.value)}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    if (!updateRes.ok) {
+      error.value = 'Failed to update password.';
+      return;
+    }
+
+    message.value = 'Password updated successfully.';
+    oldPassword.value = '';
+    newPassword.value = '';
+    confirmPassword.value = '';
+    changingPassword.value = false;
+
+  } catch (err) {
+    console.error(err);
+    error.value = 'An error occurred. Please try again.';
+  }
 }
+
 </script>
 
 <template>
@@ -105,74 +185,3 @@ function changePassword() {
     <p v-if="error" class="error">{{ error }}</p>
   </div>
 </template>
-
-
-<!-- 
-<style scoped>
-
-
-.left-panel{
-  flex: 1;
-  min-width: 320px;
-  background: #1e1e1e;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-.user-info p {
-  margin: 0.5rem 0;
-}
-
-.edit-form label,
-.password-form label {
-  display: block;
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-}
-
-.edit-form input,
-.password-form input {
-  width: 100%;
-  padding: 0.4rem;
-  margin-bottom: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #555;
-  background-color: #2a2a2a;
-  color: white;
-}
-
-.buttons,
-.password-section {
-  margin-top: 1rem;
-}
-
-button {
-  background-color: #2979ff;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  margin-right: 0.5rem;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #1565c0;
-}
-
-.success {
-  color: lightgreen;
-}
-
-.error {
-  color: salmon;
-}
-
-.toggle-btn {
-  margin-bottom: 1rem;
-  background-color: #444;
-}
-
-
-</style> -->

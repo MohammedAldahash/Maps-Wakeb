@@ -1,11 +1,15 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { isLogedin, useUser } from '@/composables/usersStore';
+import { isLogedin, useUser } from '@/composables/usersStore'; // ✅ removed `password` from here
 import "@/assets/styles/LoginForm.css";
-const {email, password, loginPage, name, setCurrentUser, setEmail, setName, setPassword} = useUser();
-const router = useRouter()
-const confirmPassword = ref('')
+
+const { email, loginPage, name, setCurrentUser } = useUser();
+const router = useRouter();
+const password = ref('');
+const confirmPassword = ref('');
+
+
 function toggleForm(){
   if(loginPage.value){
     loginPage.value = false
@@ -13,62 +17,69 @@ function toggleForm(){
     loginPage.value = true
   }
 }
-function handleLogin(){
-    fetch('http://localhost:3001/users')
-  .then(res => res.json())
-  .then(users => {
-    const user = users.find(u => u.email === email.value && u.password === password.value)
-    if (user) {
-      isLogedin.value = true
-      setCurrentUser(user)
-      setEmail(user.email);
-      setName(user.name);
-      setPassword(user.password);
-      router.push('/map')
-    } else {
-      alert('Invalid credentials')
-    }
-  })
-}
-function handleRegister(){
-  if (password.value !== confirmPassword.value) {
-    alert("Passwords do not match");
-    return;
-  }
-  fetch('http://localhost:3001/users')
-    .then(res => res.json())
-    .then(users => {
-      const exists = users.find(u => u.email === email.value);
-      if (exists) {
-        alert('Email already registered.');
-        return;
-      }
-    const newUser = {
-        id: Date.now(),
-        name: name.value,
+async function handleLogin() {
+  try {
+    const res = await fetch('http://localhost:8082/api/user/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
         email: email.value,
-        password: password.value,
-        admin: false
-      };
+        password: password.value
+      })
+    });
 
-      fetch('http://localhost:3001/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newUser)
+    if (!res.ok) throw new Error('Login failed');
+    
+    const data = await res.json();
+
+    localStorage.setItem('token', data.token);
+console.log(data.token)
+    // ✅ properly await name fetch
+    const nameRes = await fetch('http://localhost:8082/api/user/getName', {
+      headers: {
+        'Authorization': 'Bearer ' + data.token
+      }
+    });
+console.log(nameRes)
+    if (!nameRes.ok) throw new Error('Failed to get name');
+
+    const nameText = await nameRes.text(); // backend returns plain string
+console.log(nameText)
+    isLogedin.value = true;
+    setCurrentUser({ email: email.value, name: nameText });
+    router.push('/map');
+  } catch (err) {
+    alert('Invalid credentials or failed to fetch name');
+    console.error(err);
+  }
+}
+function handleRegister() {
+  if (password.value !== confirmPassword.value) {
+    alert("Passwords do not match")
+    return
+  }
+
+  fetch('http://localhost:8082/api/user/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: name.value,
+      email: email.value,
+      password: password.value
     })
+  })
     .then(res => {
-          if (res.ok) {
-            alert('Registered successfully!');
-            loginPage.value = true; // switch to login view
-          } else {
-            alert('Registration failed.');
-          }
-        });
+      if (res.ok) {
+        alert('Registered successfully!')
+        loginPage.value = true // go to login page
+      } else {
+        return res.text().then(msg => { throw new Error(msg) })
+      }
     })
-    .catch(() => {
-      alert('Registration failed. Please try again.');
+    .catch(err => {
+      alert('Registration failed: ' + err.message)
     })
 
 }
@@ -111,60 +122,3 @@ function handleRegister(){
     </form>
     </div>
 </template>
-<!-- 
-<style>
-.content{
-    display: flex; 
-    justify-content: center;
-     justify-items: center;
-}
-.login-form {
-  width: 400px;
-  margin: 100px auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  background-color: rgb(39, 46, 56);
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0,0,0.7);
-  color: white;
-  border: none;
-
-}
-
-.login-form input,
-.login-form button {
-  padding: 10px;
-  font-size: 1rem;
-  border-radius: 10px;
-  color: black;
-  border: none;
-
-}
-.login-form h2{
-    font-weight: bold;          /* Makes the text bold */
-    text-align: center;
-
-}
-
-.login-form button {
-  background-color: rgb(72, 105, 151);
-  color: white;
-  font-weight: bold;          /* Makes the text bold */
-  border: none;               /* Removes default border */
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth hover */
-  box-shadow: 0 4px 10px rgba(0, 0,0,0.3);
-
-}
-.switch-link:hover{
-  cursor: pointer;
-  color: rgb(115, 145, 244);
-}
-.login-form button:hover {
-  background-color: rgb(58, 85, 125); /* Darker on hover */
-}
-</style> -->

@@ -1,9 +1,12 @@
 .navbar {
-  background-color: #1f1f1f;
+  background-color: rgba(31, 31, 31, 0.8); /* dark + semi-transparent */
+  backdrop-filter: blur(12px);            /* blurred glass effect */
   padding: 0.75rem 1.5rem;
-  position: sticky;
+  position: fixed; /* or sticky, but fixed is more bulletproof */
   top: 0;
-  z-index: 1000;
+  width: 100%;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+  z-index: 5000;
 }
 
 .navbar nav {
@@ -46,6 +49,9 @@
 
 .left-nav a:hover {
   background-color: #2c2c2c;
+}
+.right-nav {
+  padding-right: 3rem;
 }
 
 .right-nav img {

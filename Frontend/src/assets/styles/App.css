@@ -12,3 +12,11 @@
 .main-content {
   flex: 1;
 }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background-color: #121212; /* or whatever dark bg you're using */
+}

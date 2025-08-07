@@ -13,14 +13,25 @@ const router = createRouter({
     {
       path: '/map',
       name: 'map',
-      component: MapView
+      component: MapView,
+      meta: { requiresAuth: true } // <-- protected
     },
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: DashboardView
+      component: DashboardView,
+      meta: { requiresAuth: true } // <-- protected
     }
   ],
 })
+router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+
+  if (to.meta.requiresAuth && !token) {
+    next({ name: 'login' }); // redirect to login
+  } else {
+    next(); // proceed normally
+  }
+});
 
 export default router

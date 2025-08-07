@@ -9,8 +9,10 @@ const route = useRoute()
 const router = useRouter()
 
 function handleLogout() {
+  localStorage.removeItem('token')
   logout()
   router.push('/')
+  
 }
 </script>
 
@@ -29,7 +31,7 @@ function handleLogout() {
       </div>
 
       <div class="right-nav">
-        <img src="/src/assets/images/Wakeb-logo-removebg.png" alt="Wakeb Logo" />
+        <img src="/src/assets/images/Wakeb-v02.png" alt="Wakeb Logo" />
       </div>
     </nav>
   </header>
