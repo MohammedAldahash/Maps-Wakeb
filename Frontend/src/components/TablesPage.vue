@@ -113,7 +113,8 @@ onMounted(() => {
       <tr>
         <th>Name</th>
         <th>Type</th>
-        <th>Description</th>
+        <th>latitude</th>
+        <th>longitude</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -121,7 +122,8 @@ onMounted(() => {
       <tr v-for="(fav, index) in localFavorites" :key="index">
         <td>{{ fav.locationName }}</td>
         <td>{{ fav.locationType }}</td>
-        <td>{{ fav.locationDescription || 'N/A' }}</td>
+        <td>{{ fav.latitude || 'N/A' }}</td>
+        <td>{{ fav.longitude || 'N/A' }}</td>
         <td>
           <button class="delete-btn" @click="deleteFavorite(index)">Delete</button>
         </td>
@@ -146,8 +148,9 @@ onMounted(() => {
         <thead>
           <tr>
             <th>Name</th>
-            <th>Type</th>
-            <th>Location</th>
+            <th>icon</th>
+            <th>latitude</th>
+            <th>longitude</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -155,7 +158,8 @@ onMounted(() => {
           <tr v-for="(marker, index) in markers" :key="index">
             <td>{{ marker.iconType }}</td>
             <td>{{ marker.iconType  }}</td>
-            <td>{{ marker.locationDescription || 'N/A' }}</td>
+            <td>{{ marker.latitude || 'N/A' }}</td>
+            <td>{{ marker.longitude || 'N/A' }}</td>
             <td>
               <button class="delete-btn" @click="deleteMarker(index)">Delete</button>
             </td>

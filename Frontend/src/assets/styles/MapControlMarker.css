@@ -1,10 +1,15 @@
-.control-button {
+.control-button {  
+  position: fixed;  /* or absolute if inside a relative parent */
+  top: 75px;
+  right: 340px;       /* adjust this as needed */
   background: #e2e2e2;
   opacity: 0.9;
   padding: 0.4rem;
   cursor: pointer;
   border-radius: 8px;
   transition: background-color 0.2s;
+  z-index: 2000;
+
 }
 
 .control-button:hover {
@@ -16,4 +21,40 @@
   width: 35x;
   object-fit: contain;
   filter: brightness(0.95);
+}
+.icon-panel {
+  position: fixed;
+  top: 6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(31, 31, 31, 0.8); /* dark + semi-transparent */
+  color: white;
+  padding: 1rem;
+  border-radius: 12px;
+  z-index: 2000;
+  width: 355px;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(7px);            /* blurred glass effect */
+}
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.icon-option {
+  background: none;
+  border: none;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+}
+
+.icon-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-bottom: 0.25rem;
 }

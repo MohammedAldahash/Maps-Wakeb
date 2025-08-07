@@ -80,25 +80,3 @@ watch(selectedPlace, ()=>{
       /></button>
   </div>
 </template>
-<!-- <style scoped>
-.destination-button {
-  background-color: #ffffff;
-  color: rgb(35, 35, 35);
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-.destination-button:hover{
- background-color: #e2e2e2;
-}
-.destination-button:disabled {
-  background-color: #cacacac4;
-  cursor: not-allowed;
-}
-img{
-    width: 35px;
-    height: 35px;
-}
-</style> -->

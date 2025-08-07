@@ -13,7 +13,7 @@ import '@/assets/styles/MapView.css';
     <MapLocation/>
         <MapSearch/>
 
-<div class="extentions">
+<div class="">
     <MapDestination/>
     <MapControlMarker/>
 </div>

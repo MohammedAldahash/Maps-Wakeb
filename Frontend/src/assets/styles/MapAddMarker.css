@@ -1,7 +1,8 @@
+
 .marker-mode-indicator {
   position: absolute;
-
-  left: 50%;
+  top: 1rem; /* 👈 Add this line to push it near the top */
+  left: 60%;
   transform: translateX(-50%);
   background: none;
   color: #fff;

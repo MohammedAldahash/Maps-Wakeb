@@ -1,13 +1,15 @@
 .destination-container {
-  position: relative;
+  position: fixed;
   display: flex;
   align-items: center;
 }
 
 .destination-button {
+  position: fixed;  /* or absolute if inside a relative parent */
   background: #e2e2e2;
-    opacity: 0.7;
-
+  opacity: 0.7;
+  top: 75px;
+  right: 400px;       /* adjust this as needed */
   padding: 0.4rem;
   cursor: pointer;
   border-radius: 8px;

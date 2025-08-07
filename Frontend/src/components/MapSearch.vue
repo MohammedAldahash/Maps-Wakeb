@@ -69,6 +69,8 @@ function selectResult(result) {
 
         selectedPlace.value = {
           name: result.name,
+          display_name: result.display_name,
+          type: result.type,          
           lat,
           lon,
         }
@@ -85,6 +87,35 @@ function clearSearchResult() {
   }
   selectedPlace.value = null;
 }
+async function saveAsFavorite() {
+  if (!selectedPlace.value) return;
+
+  const payload = {
+    locationName: selectedPlace.value.name || 'Unnamed Location',
+    locationType: selectedPlace.value.type || 'unknown',
+    locationDescription: selectedPlace.value.display_name || 'No description',
+    latitude: selectedPlace.value.lat,
+    longitude: selectedPlace.value.lon,
+  };
+
+  try {
+    await fetch('http://localhost:8083/api/favorite/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(payload)
+    });
+
+    alert('Saved as favorite!');
+    clearSearchResult(); // optional to reset UI
+  } catch (err) {
+    console.error('Failed to save favorite:', err);
+    alert('Error saving favorite');
+  }
+}
+
 </script>
 
 
@@ -110,10 +141,12 @@ function clearSearchResult() {
     <div v-if="selectedPlace" class="info-card">
   <div class="info-content">
     <strong>{{ selectedPlace.name }}</strong><br />
+    <!-- {{ selectedPlace.display_name }}<br /> -->
     Lat: {{ selectedPlace.lat }}<br />
     Lon: {{ selectedPlace.lon }}
   </div>
   <button class="close-btn" @click="clearSearchResult">X</button>
+  <button class="save-btn" @click="saveAsFavorite">Save</button>
 </div>
 </div>
  </template>
