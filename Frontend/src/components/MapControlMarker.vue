@@ -37,6 +37,9 @@ watch(addMarkerMode, (enabled) => {
       const marker = L.marker([lat, lng], {icon});
       marker.addTo(map.value);
 
+      // 🔽 Save to backend
+      saveMarkerToBackend(lat, lng);
+
       // Reset state
       addMarkerMode.value = false;
       selectedIconType.value = null
@@ -64,6 +67,33 @@ function selectIcon(type) {
   selectedIconType.value = type;
   showIcons.value = false;
   addMarkerMode.value = true;
+}
+async function saveMarkerToBackend(lat, lng) {
+  const payload = {
+    markerName: 'Custom Marker', // or prompt user
+    iconType: selectedIconType.value || 'default',
+    latitude: lat,
+    longitude: lng,
+  };
+
+  try {
+    const response = await fetch('http://localhost:8084/api/marker/addMarker', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) throw new Error('Failed to save marker');
+    const result = await response.json();
+    alert('Marker saved to database!');
+    console.log('Saved marker:', result);
+  } catch (err) {
+    console.error('Failed to save marker:', err);
+    alert('Error saving marker');
+  }
 }
 
 </script>

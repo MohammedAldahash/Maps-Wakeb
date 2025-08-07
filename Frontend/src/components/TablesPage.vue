@@ -3,9 +3,15 @@
 import { ref, onMounted } from 'vue'
 import { favorites, markers } from '@/composables/usersStore' // optional if you want to keep favorites in shared store
 import "@/assets/styles/TablesPage.css";
+import { useMap } from '@/composables/mapStore'
+
+const { getIconType } = useMap();
 
 const localMarkers = ref([])
 const localFavorites = ref([]) // local ref for favorites
+function getIconUrl(type) {
+  return getIconType(type).options.iconUrl;
+}
 
 async function deleteMarker(index) {
 
@@ -157,7 +163,9 @@ onMounted(() => {
         <tbody>
           <tr v-for="(marker, index) in markers" :key="index">
             <td>{{ marker.iconType }}</td>
-            <td>{{ marker.iconType  }}</td>
+            <td>
+              <img :src="getIconUrl(marker.iconType)" alt="icon" width="35" height="35" />
+            </td>
             <td>{{ marker.latitude || 'N/A' }}</td>
             <td>{{ marker.longitude || 'N/A' }}</td>
             <td>
@@ -173,93 +181,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-
-<!-- 
-<style scoped>
-.dashboard-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  padding: 2rem;
-  color: #fff;
-}
-
-.right-panel {
-  flex: 1;
-  min-width: 320px;
-  background: #1e1e1e;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-.right-panel ul {
-  list-style: none;
-  background-color: #1e1e1e00;
-  padding: 0;
-}
-
-.right-panel li {
-  background: #333;
-  margin-bottom: 0.8rem;
-  padding: 0.8rem;
-  border-radius: 8px;
-  color: white;
-
-}
-.no-favorites {
-  margin-top: 2rem;
-  font-style: italic;
-  color: gray;
-}
-.markers-section {
-  margin-top: 2rem;
-  color: white;
-}
-
-.markers-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-  background-color: #2c2c2c;
-  border: 1px solid #444;
-}
-
-.markers-table th,
-.markers-table td {
-  padding: 12px 16px;
-  border: 1px solid #444;
-  text-align: left;
-}
-
-.markers-table th {
-  background-color: #1f1f1f;
-  font-weight: bold;
-}
-
-.markers-table tr:hover {
-  background-color: #3a3a3a;
-  transition: background-color 0.2s ease;
-}
-
-.empty-state {
-  padding: 16px;
-  font-style: italic;
-  color: #999;
-}
-
-.delete-btn {
-  background-color: #e3342f;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.delete-btn:hover {
-  background-color: #cc1f1a;
-}
-
-</style> -->
