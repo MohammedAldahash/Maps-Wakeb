@@ -1,12 +1,40 @@
 .app-container {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #121212;
   color: #ffffff;
-  max-width: 100vw;
-  overflow-x: hidden;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+.bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgb(0, 0, 0,0.5); /* Dark overlay */
+  z-index: -1;
+  backdrop-filter: blur(5px);            /* blurred glass effect */
+
+}
+.bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100vw;
+  min-height: 100vh;
+  object-fit: cover;
+  z-index: -2; /* Send it behind the rest of the page */
+  pointer-events: none; /* Avoid clicks affecting video */
 }
 
 .main-content {

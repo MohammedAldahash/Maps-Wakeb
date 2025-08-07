@@ -1,10 +1,12 @@
 .left-panel {
   flex: 1;
-  min-width: 320px;
-  background: #1e1e1e;
+  min-width: 600px;
+  background: #1e1e1ed7;
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);            /* blurred glass effect */
+
 }
 
 .user-info p {

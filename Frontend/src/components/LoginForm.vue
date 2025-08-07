@@ -87,8 +87,8 @@ function handleRegister() {
 
 
 <template>
+  <div class="top-bottom">
     <div class="content">
-
     <form @submit.prevent="loginPage? handleLogin(): handleRegister()" class="login-form">
         <h2>{{ loginPage ? 'Sign In' : 'Register' }}</h2>
         <hr/>
@@ -120,5 +120,5 @@ function handleRegister() {
 
 
     </form>
-    </div>
+    </div></div>
 </template>

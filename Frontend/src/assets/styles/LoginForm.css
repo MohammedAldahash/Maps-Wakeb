@@ -8,15 +8,37 @@
   align-items: center;
   min-height: 100vh;
   background: none;
+  background-size: 400% 400%;
+}
+
+.animated-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #cee8f9;
+  text-shadow: 0 0 10px #3498db, 0 0 20px #2980b9, 0 0 30px #2980b9;
+  animation: glow 2s ease-in-out infinite alternate;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 10px #0f344d, 0 0 20px #0f344d;
+  }
+  to {
+    text-shadow: 0 0 20px #0f344d, 0 0 40px #0f344d;
+  }
 }
 
 .login-form {
-  background: #1e1e1e;
+  background: #1e1e1eca;
   padding: 2rem;
   border-radius: 12px;
   width: 100%;
   max-width: 400px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(12px);            /* blurred glass effect */
+
 }
 
 .login-form h2 {
